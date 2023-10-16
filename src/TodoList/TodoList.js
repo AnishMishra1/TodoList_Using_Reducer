@@ -1,34 +1,35 @@
-import React, { useContext, useState } from 'react'
-import TodoContext from '../Context/TodoContext'
+import React from 'react'
+
 import Todo from '../Todo/Todo'
-import TodoDispatchContext from '../Context/TodoDispatchContext';
+import { useDispatch, useSelector } from 'react-redux'
 
+const TodoList = ({editTodo, deleteTodo}) => {
 
-const TodoList = () => {
-     const {list} = useContext(TodoContext);
-     const {dispatch} = useContext(TodoDispatchContext);
+  const dispatch = useDispatch()
+  const list = useSelector((state) => state.todo)
 
-      function onDelete(todo) {dispatch({type: 'delete_todo', payload:{todo}}) }
+  
 
-      function onEdit(todo, todoText) {dispatch({type: 'edit_todo', payload:{todoText, todo}})
-        
-      }
-
-      return (
-            <div>
-                  {list.length > 0 &&
-                    list.map((todo) => 
-                         <Todo
-                            key={todo.id}
-                            id={todo.id}
-                            todoData={todo.todoData}
-                            onDelete= {() => onDelete(todo)}
-                            onEdit = {(todoText) => { onEdit(todo,todoText)}}
-                         />)}
-        
-        
-    </div>
+   function onEdit(todo, todoText) {
+     editTodo(todo, todoText)
+   }
+   function onDelete(todo) { deleteTodo(todo)}
     
+  return (
+    <div>
+      {list.map((todo) => <Todo
+                               id={todo.id}
+                               key={todo.id}
+                               todoData ={todo.todoData}
+                               onEdit={(todoText) => onEdit(todo,todoText)}
+                               onDelete ={() => onDelete(todo)}
+                           
+                           
+                           
+                           
+                           
+                           />)}
+    </div>
   )
 }
 
